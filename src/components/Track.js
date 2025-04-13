@@ -1,6 +1,19 @@
 import React from "react";
 
+
 export default function Track(props) {
+
+    function handleAdd() {
+        const track = {
+            name: props.name,
+            artist: props.artist,
+            album: props.album,
+            id: props.id
+          };
+        props.onAdd(track);
+
+    };
+
     return (
         <div className="track">
             <div className="track-info">
@@ -9,7 +22,7 @@ export default function Track(props) {
                 <p>{props.album}</p>
             </div>
             <div className="track-action">
-                <button>+</button>
+                <button onClick={handleAdd}>+</button>
             </div>
         </div>
     );

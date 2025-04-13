@@ -11,6 +11,7 @@ export default function TrackList(props) {
                 name={track.name}
                 artist={track.artist}
                 album={track.album}
+                onAdd={props.onAdd}
               />
             );
           })}

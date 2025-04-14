@@ -1,5 +1,5 @@
 import React from "react";
-import TrackList from './components/TrackList.js';
+import TrackList from './TrackList'
 
 export default function Playlist(props) {
     function handleChange(event) {

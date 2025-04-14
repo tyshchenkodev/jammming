@@ -1,7 +1,9 @@
 import React, { useState } from "react";
+import Playlist from './components/Playlist';
+import SearchResults from './components/SearchResults';
 
 
-function App() {
+export default function App() {
   const searchResults = [{
     id: 1,
     name: 'A Beautiful Lie',
@@ -16,8 +18,15 @@ function App() {
     setPlaylistName(newName);
   }
 
+  function addTrack(track) {
+    const trackExists = playlistTracks.some(savedTrack => savedTrack.id === track.id);
+    if(trackExists) return;
+    setPlaylistTracks([...playlistTracks, track]);
+  }
+
   return (
     <div>
+      <SearchResults onAdd={addTrack} tracks={searchResults}/>
       <Playlist playlistName={playlistName} playlistTracks={playlistTracks} onNameChange={handleNameChange}/>
     </div>
   )

@@ -3,9 +3,9 @@ import React from 'react';
 export default function Track(props) {
     return (
         <div>
-            <h3>A Beautiful Lie</h3>
-            <span>30 Seconds to Mars</span>
-            <p>A Beautiful Lie</p>
+            <h3>{props.name}</h3>
+            <span>{props.artist}</span>
+            <p>{props.album}</p>
             <button>+</button>
         </div>
     )

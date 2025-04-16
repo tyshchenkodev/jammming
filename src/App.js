@@ -24,10 +24,21 @@ export default function App() {
     setPlaylistTracks([...playlistTracks, track]);
   }
 
+  function removeTrack(track) {
+    const remove = playlistTracks.filter(savedTrack => track.id !== savedTrack.id);
+    setPlaylistTracks(remove);
+  }
+
   return (
     <div>
-      <SearchResults onAdd={addTrack} tracks={searchResults}/>
-      <Playlist playlistName={playlistName} playlistTracks={playlistTracks} onNameChange={handleNameChange}/>
+      <SearchResults 
+          onAdd={addTrack} 
+          tracks={searchResults}/>
+      <Playlist 
+          playlistName={playlistName} 
+          playlistTracks={playlistTracks} 
+          onNameChange={handleNameChange}
+          onRemove={removeTrack}/>
     </div>
   )
 }

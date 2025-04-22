@@ -8,7 +8,8 @@ export default function App() {
     id: 1,
     name: 'A Beautiful Lie',
     artist: '30 Seconds to Mars',
-    album: 'A Beautiful Lie'
+    album: 'A Beautiful Lie',
+    uri: "spotify:track:abc123"
   }];
 
   const [playlistName, setPlaylistName] = useState("My Playlist");
@@ -27,7 +28,12 @@ export default function App() {
   function removeTrack(track) {
     const remove = playlistTracks.filter(savedTrack => track.id !== savedTrack.id);
     setPlaylistTracks(remove);
-  }
+  };
+
+  function savePlaylist() {
+    const trackUris = playlistTracks.map(track => track.uri);
+    console.log(trackUris);
+  };
 
   return (
     <div>
@@ -38,7 +44,8 @@ export default function App() {
           playlistName={playlistName} 
           playlistTracks={playlistTracks} 
           onNameChange={handleNameChange}
-          onRemove={removeTrack}/>
+          onRemove={removeTrack}
+          onSave={savePlaylist}/>
     </div>
   )
 }

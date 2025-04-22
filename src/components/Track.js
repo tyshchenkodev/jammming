@@ -6,7 +6,8 @@ export default function Track(props) {
             id: props.id,
             name: props.name,
             artist: props.artist,
-            album: props.album
+            album: props.album,
+            uri: props.uri
           };
           props.onAdd(track);
     }
@@ -16,7 +17,8 @@ export default function Track(props) {
             id: props.id,
             name: props.name,
             artist: props.artist,
-            album: props.album
+            album: props.album,
+            uri: props.uri
           };
           props.onRemove(track);
     }

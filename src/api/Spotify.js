@@ -1,45 +1,41 @@
-/* ---------- конфіг ---------- */
-const clientId    = '0ee0f6f828214cb8b6be5ed87ef40b36';
-const redirectUri = 'http://127.0.0.1:3000/callback';
-const scope       = 'playlist-modify-public playlist-modify-private';
-/* ---------------------------- */
+const clientId     = '0ee0f6f828214cb8b6be5ed87ef40b36';
+const clientSecret = 'c79799e8b78349d49f5e395949e0cd83';
 
-let accessToken;
-let tokenExpireTimeout;
+let appToken;
+let appTokenTimeout;
 
-function getAccessToken() {
-  /* 1 – якщо токен уже є → повертаємо */
-  if (accessToken) return accessToken;
-
-  /* 2 – перевіряємо, чи Spotify повернув нас з #access_token */
-  const hash = window.location.hash; // "#access_token=...&expires_in=..."
-  if (hash.includes('access_token') && hash.includes('expires_in')) {
-    const params    = new URLSearchParams(hash.substring(1)); // без "#"
-    accessToken     = params.get('access_token');
-    const expiresIn = Number(params.get('expires_in'));
-
-    // таймер автолог‑аута
-    clearTimeout(tokenExpireTimeout);
-    tokenExpireTimeout = setTimeout(() => (accessToken = undefined), expiresIn * 1000);
-
-    // прибираємо хеш із адреси
-    window.history.pushState('', null, redirectUri);
-
-    return accessToken;
-  }
-
-  /* 3 – токена немає → редіректимо на сторінку авторизації Spotify */
-  const authEndpoint = 'https://accounts.spotify.com/authorize';
-  const authUrl =
-    `${authEndpoint}?client_id=${clientId}` +
-    `&response_type=token` +
-    `&redirect_uri=${encodeURIComponent(redirectUri)}` +
-    `&scope=${encodeURIComponent(scope)}` +
-    `&show_dialog=true`;
-
-  window.location = authUrl;       // <‑ переадресація
-  /* Після редіректу функція вже не виконується далі */
+async function getAppToken() {
+  if (appToken) return appToken;
+  const response = await fetch('https://accounts.spotify.com/api/token', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'Authorization': 'Basic ' + btoa(clientId + ':' + clientSecret)
+    },
+    body: 'grant_type=client_credentials'
+  });
+  const { access_token, expires_in } = await response.json();
+  appToken = access_token;
+  clearTimeout(appTokenTimeout);
+  appTokenTimeout = setTimeout(() => (appToken = null), expires_in * 1000);
+  return appToken;
 }
 
-/* експорт “служби” */
-export const Spotify = { getAccessToken };
+async function search(term) {
+  const token = await getAppToken();
+  if (!token || !term.trim()) return [];
+  const url = `https://api.spotify.com/v1/search?type=track&q=${encodeURIComponent(term)}`;
+  const response = await fetch(url, {
+    headers: { Authorization: `Bearer ${token}` }
+  });
+  const data = await response.json();
+  return (data.tracks?.items || []).map(item => ({
+    id:     item.id,
+    name:   item.name,
+    artist: item.artists[0]?.name || 'Unknown',
+    album:  item.album.name,
+    uri:    item.uri
+  }));
+}
+
+export const Spotify = { search };

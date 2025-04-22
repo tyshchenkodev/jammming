@@ -1,33 +1,24 @@
-import React, { useState } from "react";
-import TrackList from './TrackList'
+import React, { useState } from 'react';
+import TrackList from './TrackList';
 
-export default function Playlist(props) {
+export default function Playlist({ playlistName, playlistTracks, onNameChange, onRemove, onSave }) {
+  const [isEditing, setIsEditing] = useState(false);
 
-    const [isEditing, setIsEditing] = useState(false);
+  return (
+    <div>
+      {isEditing ? (
+        <input
+          value={playlistName}
+          onChange={e => onNameChange(e.target.value)}
+          onBlur={() => setIsEditing(false)}
+        />
+      ) : (
+        <h2 onClick={() => setIsEditing(true)}>{playlistName}</h2>
+      )}
 
-    function handleEditClick() {
-        setIsEditing(true);
-    }
+      <TrackList tracks={playlistTracks} onRemove={onRemove} isRemoval />
 
-    function handleChange(event) {
-        props.onNameChange(event.target.value);
-    }
-    return (
-        <div>
-            {isEditing 
-  ? <input 
-      value={props.playlistName} 
-      onChange={handleChange} 
-      onBlur={() => setIsEditing(false)} 
-    />
-  : <h2 onClick={handleEditClick}>{props.playlistName}</h2>
+      <button onClick={onSave}>Save to Spotify</button>
+    </div>
+  );
 }
-        <TrackList 
-                tracks={props.playlistTracks} 
-                onRemove={props.onRemove}
-                isRemoval={true}
-/>
-            <button onClick={props.onSave}>Save to Spotify</button>
-        </div>
-    )
-};

@@ -17,10 +17,17 @@ export default function App() {
   const removeTrack = track =>
     setPlaylistTracks(playlistTracks.filter(t => t.id !== track.id));
 
-  const savePlaylist = () => {
-    const uris = playlistTracks.map(t => t.uri);
-    console.log('URIs to save:', uris);
-  };
+  async function savePlaylist() {
+    try {
+      const uris = playlistTracks.map(t => t.uri);
+      await Spotify.savePlaylist(playlistName, uris);
+      setPlaylistName('New Playlist');
+      setPlaylistTracks([]);
+    } catch (err) {
+      console.error('Error saving playlist:', err);
+    }
+  }
+  
 
   const searchSpotify = async term => {
     try {
@@ -30,6 +37,7 @@ export default function App() {
       console.error(err);
     }
   };
+  
 
   return (
     <div>

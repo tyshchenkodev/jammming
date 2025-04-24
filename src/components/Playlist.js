@@ -18,7 +18,7 @@ export default function Playlist({ playlistName, playlistTracks, onNameChange, o
 
       <TrackList tracks={playlistTracks} onRemove={onRemove} isRemoval />
 
-      <button onClick={onSave}>Save to Spotify</button>
+      <button onClick={onSave} disabled={playlistTracks.length === 0}>Save to Spotify</button>
     </div>
   );
 }

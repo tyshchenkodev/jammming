@@ -1,27 +1,35 @@
 # Jammming — Spotify Playlist Builder
 
-React application that allows users to search Spotify tracks, create a custom playlist and save it to their Spotify account.
+Jammming is a React application that lets users search for tracks through the Spotify Web API, build a custom playlist, and save it directly to their Spotify account.
 
 ## Features
-- Spotify OAuth authorization
-- Search tracks via Spotify Web API
-- Add/remove tracks from playlist
-- Rename playlist
-- Save playlist to Spotify account
+
+- Search tracks from Spotify
+- Add tracks to a custom playlist
+- Remove tracks from the playlist
+- Rename the playlist
+- Save the playlist to a Spotify account
+- Spotify authorization with the PKCE flow
 
 ## Tech Stack
+
 - React
 - JavaScript
 - Spotify Web API
-- OAuth PKCE
-- CSS
+- OAuth 2.0 PKCE
+- Fetch API
+- Create React App
 
-## What I learned
-- Component-based architecture
-- State management with React hooks
-- API requests with fetch
-- OAuth authorization flow
-- Error handling
+## Project Structure
 
-## Run locally
-...
+```txt
+src/
+  api/
+    Spotify.js
+  components/
+    Playlist.js
+    SearchBar.js
+    SearchResults.js
+    Track.js
+    TrackList.js
+  App.js
